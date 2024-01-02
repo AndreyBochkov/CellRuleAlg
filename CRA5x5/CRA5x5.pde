@@ -44,6 +44,11 @@ void trueDraw() {
     
     /*
     //Неоптимизированная версия.
+    for (int i = 0; i < 29; i ++) {
+      for (int j = 0; j < 29; j ++) {
+        results[0][i][j] = false;
+      }
+    }
     results[0][14][14] = true; //Точка по центру
     results[0] = calc(results[0]); //Рассчёт каждого хода исходя из предыдущего
     results[1] = calc(results[0]);
