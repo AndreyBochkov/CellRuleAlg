@@ -15,7 +15,7 @@ void setup() {
   fullScreen();
   background(0);
   stroke(128);
-  grid(matrix, 0, 5, 30, 30);
+  graphics();
 }
 
 void draw() {}
@@ -24,6 +24,7 @@ void trueDraw() {
   if (mouseX > 30 && mouseY > 30 && mouseX < 180 && mouseY < 180) {
     matrix[ceil((mouseY-30)/30)][ceil((mouseX-30)/30)] = !matrix[ceil((mouseY-30)/30)][ceil((mouseX-30)/30)]; //Изменяем правило
     
+    ///*
     //Оптимизированная версия (рез-т точно такой же, как и после рассчёта неоптимизированной версией программы, но нагрузка на процессор меньше).
     for (byte i = 0; i < 5; i ++) {
       for (byte j = 0; j < 5; j ++) {
@@ -41,22 +42,19 @@ void trueDraw() {
     }
     results[6] = calc(results[5]); //Непредсказуемый узор (ход 7)
     graphics();
+    //*/
     
     /*
     //Неоптимизированная версия.
-    for (int i = 0; i < 29; i ++) {
-      for (int j = 0; j < 29; j ++) {
+    for (int i = 0; i < results[0].length; i ++) {
+      for (int j = 0; j < results[0].length; j ++) {
         results[0][i][j] = false;
       }
     }
-    results[0][14][14] = true; //Точка по центру
-    results[0] = calc(results[0]); //Рассчёт каждого хода исходя из предыдущего
-    results[1] = calc(results[0]);
-    results[2] = calc(results[1]);
-    results[3] = calc(results[2]);
-    results[4] = calc(results[3]);
-    results[5] = calc(results[4]);
-    results[6] = calc(results[5]);
+    results[0][ceil(results[0].length/2)][ceil(results[0].length/2)] = true; //Точка по центру
+    for (byte i = 0; i < 6; i ++) {
+      results[i] = calc(results[max(i-1, 0)], rule[i]); //Рассчёт каждого хода исходя из предыдущего
+    }
     graphics();
     */
   }
@@ -106,15 +104,10 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-  if (key == '-') { //Изменение отображаемого ходя симуляции
+  if (key == '-' && index != 0) { //Изменение отображаемого ходя симуляции
     index --;
-  } else if (key == '+') {
+  } else if (key == '+' && index != 6) {
     index ++;
-  }
-  if (index == 7) {
-    index = 6;
-  } else if (index == -1) {
-    index = 0;
   }
   graphics();
 }
